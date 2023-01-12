@@ -29,7 +29,6 @@ class SubImporter:
         # baseColor
         if createdFileNodes['baseColor']:
             cmds.connectAttr('%s.outColor' % createdFileNodes['baseColor'], '%s.color' % mat)
-
         # metalness
         if createdFileNodes['metalness']:
             cmds.connectAttr('%s.outColor.outColorR' % createdFileNodes['metalness'], '%s.reflectivity' % mat)
@@ -50,8 +49,6 @@ class SubImporter:
         # opacity
         if createdFileNodes['opacity']:
             cmds.connectAttr('%s.outColor' % createdFileNodes['opacity'], '%s.transparency' % mat)
-
-        print("inserted!")
 
     def createFileTexture(self, path, entry):
         #  Function for creating the File [texture] node as maya does
@@ -105,7 +102,6 @@ class SubImporter:
                 else:
                     pass
 
-
         """**Use this section to add specific settings or reroute connections**"""
         # baseColor
         if createdFileNodes['baseColor']:
@@ -134,8 +130,6 @@ class SubImporter:
         # opacity
         if createdFileNodes['opacity']:
             cmds.connectAttr('%s.outColor.outColorR' % createdFileNodes['opacity'], '%s.transmission' % mat)
-
-        print("inserted!")
 
 
 class SubImportUI(QtWidgets.QDialog):
@@ -204,13 +198,16 @@ class SubImportUI(QtWidgets.QDialog):
         opacityTxt = QtWidgets.QLabel('Opacity:')
         scrollLayout.addWidget(opacityTxt, 5, 0)
 
+        # Creating the create Arnold or Maya mat check
         self.arnoldCheck = QtWidgets.QCheckBox('Create Arnold Shader?')
         self.arnoldCheck.setChecked(True)
         layout.addWidget(self.arnoldCheck)
 
+        # Creating the bump or normal map check
         self.heightCheck = QtWidgets.QCheckBox('Is Height A Normal Map?')
         layout.addWidget(self.heightCheck)
 
+        # Creating the final apply and create mat button
         applyBtn = QtWidgets.QPushButton("Create Material")
         applyBtn.clicked.connect(self.createConnections)
         layout.addWidget(applyBtn)
@@ -248,7 +245,7 @@ class SubImportUI(QtWidgets.QDialog):
                         self.bumpCB.addItem(entry.name)
                         self.opacityCB.addItem(entry.name)
 
-                        # for convenience of user, checks file names and populates CBs
+                        # for convenience of user, checks file names and populates CBs assuming correct name convention
                         if "basecolor" in entry.name:
                             self.baseColorCB.setCurrentText(entry.name)
                         if "metalness" in entry.name:
